@@ -71,7 +71,14 @@ class DeployCommand extends BaseCommand
         $dryRun = $input->getOption('go') ? '' : '--dry-run';
         $command = "rsync $dryRun $parameters -e $ssh ./ $user$host:$dir";
         
+        $output->writeln(sprintf('%s on <info>%s</info> server with <info>%s</info> command', 
+            ($dryRun) ? 'Fake deploying' : 'Deploying',
+            $env, 
+            $command));
+            
         $process = new Process($command);
         $process->run();
+        
+        $output->writeln(sprintf('Deployed on <info>%s</info> server!', $env));
     }
 }
