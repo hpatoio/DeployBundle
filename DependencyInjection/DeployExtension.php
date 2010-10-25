@@ -24,9 +24,11 @@ class DeployExtension extends Extension
                 throw new \InvalidArgumentException('You must provide the dir (e.g. /var/www/project)');
             }
             
+            $parameters = (isset($config['parameters'])) ? $config['parameters'] : array();
+
             $container->setParameter('deploy.'.$server.'.user', ($config['user'])? $config['user'].'@': '');
             $container->setParameter('deploy.'.$server.'.port', $config['port']);
-            $container->setParameter('deploy.'.$server.'.parameters', $config['parameters']);
+            $container->setParameter('deploy.'.$server.'.parameters', $parameters);
         }
     }
 
