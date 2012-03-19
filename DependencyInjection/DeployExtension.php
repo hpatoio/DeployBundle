@@ -1,6 +1,6 @@
 <?php
 
-namespace Contactlab\DeployBundle\DependencyInjection;
+namespace Bundle\DeployBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Contactlab\DeployBundle;
+namespace Bundle\DeployBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
