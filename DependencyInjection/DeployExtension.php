@@ -1,55 +1,39 @@
 <?php
 
-namespace Bundle\DeployBundle\DependencyInjection;
+namespace Contactlab\DeployBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class DeployExtension extends Extension
 {
 
-    public function configLoad($config, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container)
     {
-        foreach ($config as $server => $config) {
-            if (isset($config['host'])) {
-                $container->setParameter('deploy.'.$server.'.host', trim($config['host'], '/'));
+
+    	$deploy_config = array_pop($configs);
+    	
+		foreach ($deploy_config as $env => $env_conf) {
+		
+            if (isset($env_conf['host'])) {
+                $container->setParameter('deploy.'.$env.'.host', trim($env_conf['host'], '/'));
             }else{
                 throw new \InvalidArgumentException('You must provide the host (e.g. http://example.com)');
             }
-            if (isset($config['dir'])) {
-                $container->setParameter('deploy.'.$server.'.dir', $config['dir']);
+            if (isset($env_conf['dir'])) {
+                $container->setParameter('deploy.'.$env.'.dir', $env_conf['dir']);
             }
             else {
                 throw new \InvalidArgumentException('You must provide the dir (e.g. /var/www/project)');
             }
             
-            $parameters = (isset($config['parameters'])) ? $config['parameters'] : array();
-
-            $container->setParameter('deploy.'.$server.'.user', ($config['user'])? $config['user'].'@': '');
-            $container->setParameter('deploy.'.$server.'.port', $config['port']);
-            $container->setParameter('deploy.'.$server.'.parameters', $parameters);
+            $parameters = (isset($env_conf['parameters'])) ? $env_conf['parameters'] : array();
+            
+            $container->setParameter('deploy.'.$env.'.user', ($env_conf['user'])? $env_conf['user'].'@': '');
+            $container->setParameter('deploy.'.$env.'.port', $env_conf['port']);
+            $container->setParameter('deploy.'.$env.'.parameters', $parameters);
         }
+        
     }
 
-    /**
-     * Returns the base path for the XSD files.
-     *
-     * @return string The XSD base path
-     */
-    public function getXsdValidationBasePath()
-    {
-        return null;
-    }
-
-    public function getNamespace()
-    {
-        return 'http://www.symfony-project.org/schema/dic/symfony';
-    }
-
-    public function getAlias()
-    {
-        return 'deploy';
-    }
-
-}
+}	

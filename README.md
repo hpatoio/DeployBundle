@@ -21,7 +21,7 @@ Provide the symfony 1.4 command line to deploy your app on a server.
 ### Configure
 
     # app/config/config.yml
-    deploy.config:
+    deploy:
       prod:
         host: 127.0.0.1 // or the hostname
         user: root
@@ -46,7 +46,8 @@ Deployment is easy:
 Simulate deployment
 
     php app/console project:deploy prod
+    
+Custom parameters for rsync (default -azC --force --delete --progress -h) 
 
-or
-
-    php app/console project:deploy --dry-run prod
+    php app/console project:deploy --rsync-options="-azChdl" prod
+    

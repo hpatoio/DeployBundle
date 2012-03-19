@@ -1,9 +1,9 @@
 <?php
 
-namespace Bundle\DeployBundle;
+namespace Contactlab\DeployBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle as BaseBundle;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class DeployBundle extends BaseBundle
+class DeployBundle extends Bundle
 {
 }
