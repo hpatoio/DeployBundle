@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\DeployBundle\Command;
+namespace Hpatoio\DeployBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -18,7 +18,7 @@ class DeployCommand extends ContainerAwareCommand
     {
         $this
         	->setName('project:deploy')
-        	->setDescription('Deploy the project via rsync')
+        	->setDescription('Deploy your project via rsync')
         	->addArgument('env', InputArgument::REQUIRED, 'The environment where you want to deploy the project')
             ->addOption('go', null, InputOption::VALUE_NONE, 'Do the deployment')
             ->addOption('rsync-options', null, InputOption::VALUE_OPTIONAL, 'To options to pass to the rsync executable', '-azC --force --delete --progress -h')

@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\DeployBundle;
+namespace Hpatoio\DeployBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

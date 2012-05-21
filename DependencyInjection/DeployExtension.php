@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\DeployBundle\DependencyInjection;
+namespace Hpatoio\DeployBundle\DependencyInjection;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

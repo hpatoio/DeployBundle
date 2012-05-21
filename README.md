@@ -2,9 +2,11 @@ Provide the symfony 1.4 command line to deploy your app on a server.
 
 ## Installation
 
-### Add DeployBundle to your src/Bundle dir
+### Add DeployBundle to your deps
 
-    git submodule add git://github.com/dator/DeployBundle.git src/Bundle/DeployBundle
+    [HpatoioDeployBundle]
+      git=git://github.com/hpatoio/DeployBundle.git
+      target=/bundles/Hpatoio/DeployBundle
 
 ### Add DeployBundle to your application kernel
 
@@ -13,10 +15,14 @@ Provide the symfony 1.4 command line to deploy your app on a server.
     {
         return array(
             // ...
-            new Bundle\DeployBundle\DeployBundle(),
+            new Hpatoio\DeployBundle\DeployBundle(),
             // ...
         );
     }
+    
+### Register the namespace in autoload.php
+
+    'Hpatoio'     => __DIR__.'/../vendor/bundles',
 
 ### Configure
 
