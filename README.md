@@ -56,4 +56,7 @@ Simulate deployment
 Custom parameters for rsync (default -azC --force --delete --progress -h) 
 
     php app/console project:deploy --rsync-options="-azChdl" prod
-    
+
+## Feedbacks
+
+For any feedback open an issue here on Github or comment here http://www.iliveinperego.com/2012/03/symfony2-deploy-like-symfony-1-4/    
