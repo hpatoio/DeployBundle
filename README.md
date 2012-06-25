@@ -1,4 +1,4 @@
-Provide the symfony 1.4 command line to deploy your app on a server.
+Symfony 1.4 project:deploy command for Symfony2.
 
 ## Installation
 
@@ -52,6 +52,10 @@ Deployment is easy:
 Simulate deployment
 
     php app/console project:deploy prod
+    
+Cache warmup with --cache-warmup option. With this option once the deploy has finished cache:warmup command is run on the destination server.   
+
+    php app/console project:deploy --go --cache-warmup prod
     
 Custom parameters for rsync (default -azC --force --delete --progress -h) 
 

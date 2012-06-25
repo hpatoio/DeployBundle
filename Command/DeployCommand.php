@@ -14,6 +14,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Process\Process;
 
 class DeployCommand extends ContainerAwareCommand
@@ -28,7 +29,8 @@ class DeployCommand extends ContainerAwareCommand
             ->setDescription('Deploy your project via rsync')
             ->addArgument('env', InputArgument::REQUIRED, 'The environment where you want to deploy the project')
             ->addOption('go', null, InputOption::VALUE_NONE, 'Do the deployment')
-            ->addOption('rsync-options', null, InputOption::VALUE_OPTIONAL, 'To options to pass to the rsync executable', '-azC --force --delete --progress -h')
+            ->addOption('cache-warmup', null, InputOption::VALUE_NONE, 'Run cache:warmup command on destination server')
+            ->addOption('rsync-options', null, InputOption::VALUE_OPTIONAL, 'Options to pass to the rsync executable', '-azC --force --delete --progress -h')
             ;
     }
 
@@ -37,10 +39,13 @@ class DeployCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $output->getFormatter()->setStyle('notice', new OutputFormatterStyle('red', 'yellow'));
+
         $env    = $input->getArgument('env');
 
         if (!$this->getContainer()->getParameter('deploy.'.$env.'.host')) {
-            throw new \InvalidArgumentException('You must provide the host (e.g. http://example.com)');
+            throw new \InvalidArgumentException('You must provide the host');
         }
 
         $host   = $this->getContainer()->getParameter('deploy.'.$env.'.host');
@@ -76,14 +81,53 @@ class DeployCommand extends ContainerAwareCommand
             $command));
 
         $process = new Process($command);
-        $process->run();
 
         $output->writeln("\nSTART deploy\n--------------------------------------------");
 
-        $output->writeln($process->getOutput());
+        $process->run(function ($type, $buffer) use ($output) {
+                        if ('err' === $type) {
+                            $output->write( 'ERR > '.$buffer);
+                        } else {
+                            $output->write($buffer);
+                        }
+                    });
 
-        $output->writeln("--------------------------------------------\n");
+        $output->writeln("\nEND deploy\n--------------------------------------------\n");
 
-        $output->writeln(sprintf('Deployed on <info>%s</info> server!', $env));
+        if ($dryRun) {
+
+            $output->writeln('<notice>This was a simulation, --go was not specified.</notice>');
+            $output->writeln(sprintf('<info>Run the command with --go for really copy the files to %s server.</info>', $env));
+
+        } else {
+            $output->writeln(sprintf("Deployed on <info>%s</info> server!\n", $env));
+
+            if ( $input->getOption('cache-warmup') ) {
+
+                $output->writeln(sprintf("Running cache:warmup on <info>%s</info> server!\n", $env));
+
+                $command = "ssh $user$host 'cd $dir;php app/console cache:warmup -e $env'";
+
+                $process = new Process($command);
+                $process->run(function ($type, $buffer) use ($output) {
+                        if ('err' === $type) {
+                            $output->write( 'ERR > '.$buffer);
+                        } else {
+                            $output->write($buffer);
+                        }
+                    });
+
+                $output->writeln("\nDone");
+
+            } else {
+
+                $output->writeln(sprintf("<notice>Cache was not regenerated on %s server so you might not see changes.</notice> Login to %s server and run:\n\n<info> app/console cache:warmup</info>", $env, $env));
+
+            }
+
+        }
+
+        $output->writeln("");
+
     }
 }
