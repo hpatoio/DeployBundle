@@ -1,13 +1,13 @@
 Brings Symfony 1.4 project:deploy command to Symfony2.
 
-## Installation
+## Installation 2.0.X
 
-### Add DeployBundle to your deps
+###  Add DeployBundle to your deps
 
     [HpatoioDeployBundle]
       git=git://github.com/hpatoio/DeployBundle.git
       target=/bundles/Hpatoio/DeployBundle
-
+      
 ### Add DeployBundle to your application kernel
 
     // app/AppKernel.php
@@ -23,6 +23,32 @@ Brings Symfony 1.4 project:deploy command to Symfony2.
 ### Register the namespace in autoload.php
 
     'Hpatoio'     => __DIR__.'/../vendor/bundles',
+    
+run 
+
+    bin/vendors install
+    
+## Installation 2.1
+
+###  Add DeployBundle to your composer.json
+
+     "hpatoio/deploy-bundle": "master"
+      
+### Add DeployBundle to your application kernel
+
+    // app/AppKernel.php
+    public function registerBundles()
+    {
+        $bundles = array(
+            // ...
+            new Hpatoio\DeployBundle\DeployBundle(),
+            // ...
+        );
+    }
+    
+run 
+
+    composer update
 
 ### Configure
 
