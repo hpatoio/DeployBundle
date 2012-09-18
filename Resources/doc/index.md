@@ -32,7 +32,7 @@ run
 
 ###  Add DeployBundle to your composer.json
 
-     "hpatoio/deploy-bundle": "master"
+     "hpatoio/deploy-bundle": "dev-master"
       
 ### Add DeployBundle to your application kernel
 
