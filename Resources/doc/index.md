@@ -28,11 +28,11 @@ run
 
     bin/vendors install
     
-## Installation 2.1
+## Installation 2.0.* e 2.1.*
 
 ###  Add DeployBundle to your composer.json
 
-     "hpatoio/deploy-bundle": "dev-master"
+     "hpatoio/deploy-bundle": "V1.0"
       
 ### Add DeployBundle to your application kernel
 
