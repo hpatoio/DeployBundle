@@ -33,11 +33,11 @@ class DeployExtension extends Extension
                 throw new \InvalidArgumentException('You must provide the dir (e.g. /var/www/project)');
             }
 
-            $parameters = (isset($env_conf['parameters'])) ? $env_conf['parameters'] : array();
+            $rsync_options = (isset($env_conf['rsync-options'])) ? $env_conf['rsync-options'] : null;
 
             $container->setParameter('deploy.'.$env.'.user', ($env_conf['user'])? $env_conf['user'].'@': '');
             $container->setParameter('deploy.'.$env.'.port', $env_conf['port']);
-            $container->setParameter('deploy.'.$env.'.parameters', $parameters);
+            $container->setParameter('deploy.'.$env.'.rsync-options', $rsync_options);
         }
 
     }

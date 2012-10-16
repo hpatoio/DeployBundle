@@ -63,17 +63,23 @@ class DeployCommand extends ContainerAwareCommand
           $ssh = '"ssh -p'.$port.'"';
         }
 
-        $parameters = $input->getOption('rsync-options') ? $input->getOption('rsync-options') : '-azC --force --delete --progress -h';
+    $rsync_options = $input->getOption('rsync-options');
+
+    if ($this->getContainer()->getParameter('deploy.'.$env.'.rsync-options'))
+            $rsync_options = $this->getContainer()->getParameter('deploy.'.$env.'.rsync-options');
+
+    if ($input->getOption('rsync-options') !== '-azC --force --delete --progress -h')
+        $rsync_options = $input->getOption('rsync-options');
 
         $config_root_path = $this->getContainer()->get('kernel')->getRootDir()."/config/";
 
         if (file_exists($config_root_path.'rsync_exclude.txt')) {
-            $parameters .= sprintf(' --exclude-from=%srsync_exclude.txt', $config_root_path);
+            $rsync_options .= sprintf(' --exclude-from=%srsync_exclude.txt', $config_root_path);
         }
 
         $dryRun = $input->getOption('go') ? '' : '--dry-run';
 
-        $command = "rsync $dryRun $parameters -e $ssh ./ $user$host:$dir";
+        $command = "rsync $dryRun $rsync_options -e $ssh ./ $user$host:$dir";
 
         $output->writeln(sprintf('%s on <info>%s</info> server with <info>%s</info> command',
             ($dryRun) ? 'Fake deploying' : 'Deploying',
