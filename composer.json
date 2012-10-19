@@ -19,5 +19,5 @@
     "autoload": {
         "psr-0": { "Hpatoio\\DeployBundle": "" }
     },
-    "target-dir": "Hpatoio/DeployBundle",
+    "target-dir": "Hpatoio/DeployBundle"
 }
