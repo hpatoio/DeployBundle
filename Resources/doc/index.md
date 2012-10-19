@@ -1,6 +1,6 @@
 Brings Symfony 1.4 project:deploy command to Symfony2.
 
-## Installation 2.0.X
+## Installation 2.0.*
 
 ###  Add DeployBundle to your deps
 
@@ -28,11 +28,11 @@ run
 
     bin/vendors install
     
-## Installation 2.1
+## Installation 2.1.*
 
 ###  Add DeployBundle to your composer.json
 
-     "hpatoio/deploy-bundle": "dev-master"
+     "hpatoio/deploy-bundle": "1.1"
       
 ### Add DeployBundle to your application kernel
 
@@ -55,6 +55,7 @@ run
     # app/config/config.yml
     deploy:
       prod:
+        rsync-options: '-azC --force --delete --progress -h --checksum'
         host: 127.0.0.1 // or the hostname
         user: root
         dir: /path/to/dir
@@ -64,6 +65,14 @@ run
         user: root2
         dir: /path/to/dir
         port: 22
+
+### Rsync Options
+
+If you add the key rsync-options to your environment you will override the default options used for rsync. So the system is using 
+
+* "-azC --force --delete --progress -h" if nothing is specified
+* the value of rsync-options if specified in the config
+* the value of the command line option --rsync-options
     
 ### Rsync Exclude
 
@@ -90,3 +99,4 @@ Custom parameters for rsync (default -azC --force --delete --progress -h)
 ## Feedbacks
 
 For any feedback open an issue here on Github or comment here http://www.iliveinperego.com/2012/03/symfony2-deploy-like-symfony-1-4/    
+
