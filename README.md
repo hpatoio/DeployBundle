@@ -12,7 +12,7 @@ Documentation
 
 The bulk of the documentation is stored in the `Resources/doc/index.md` file in this bundle:
 
-[Read the Documentation](https://github.com/hpatoio/DeployBundle/blob/1.1/Resources/doc/index.md)
+[Read the Documentation](https://github.com/hpatoio/DeployBundle/blob/master/Resources/doc/index.md)
 
 Feedbacks & Support
 -------------
