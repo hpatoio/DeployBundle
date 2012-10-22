@@ -32,7 +32,9 @@ run
 
 ###  Add DeployBundle to your composer.json
 
-     "hpatoio/deploy-bundle": "1.1"
+     "hpatoio/deploy-bundle": "the-version-you-want"
+
+For a complete list of available version have a look here: https://packagist.org/packages/hpatoio/deploy-bundle
       
 ### Add DeployBundle to your application kernel
 
@@ -66,7 +68,7 @@ run
         dir: /path/to/dir
         port: 22
 
-### Rsync Options
+### Rsync Options | New in version 1.1
 
 If you add the key rsync-options to your environment you will override the default options used for rsync. So the system is using 
 

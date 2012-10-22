@@ -5,14 +5,14 @@ Brings Symfony 1.4 project:deploy command to Symfony2.
 
 **License**
 
-DeployBundle is licensed under the GNU GPL v2 - see the [Resources/meta/LICENSE](https://github.com/hpatoio/DeployBundle/blob/master/Resources/meta/LICENSE>) file for details
+DeployBundle is licensed under the CC-BY-SA-3.0 - see [the here](http://www.spdx.org/licenses/CC-BY-SA-3.0) for details
 
 Documentation
 -------------
 
 The bulk of the documentation is stored in the `Resources/doc/index.md` file in this bundle:
 
-[Read the Documentation for version 1.1](https://github.com/hpatoio/DeployBundle/tree/1.1/Resources/doc/index.md)
+[Read the Documentation](Resources/doc/index.md)
 
 Feedbacks & Support
 -------------

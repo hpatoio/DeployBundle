@@ -4,7 +4,7 @@
     "description": "Brings Symfony 1.4 project:deploy command to Symfony2.",
     "keywords": ["deploy","command"],
     "homepage": "http://github.com/hpatoio/DeployBundle",
-    "license": "GPL",
+    "license": "CC-BY-SA-3.0",
     "authors": [
         {
             "name": "Simone Fumagalli",
