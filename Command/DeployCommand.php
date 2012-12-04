@@ -30,7 +30,7 @@ class DeployCommand extends ContainerAwareCommand
             ->addArgument('env', InputArgument::REQUIRED, 'The environment where you want to deploy the project')
             ->addOption('go', null, InputOption::VALUE_NONE, 'Do the deployment')
             ->addOption('cache-warmup', null, InputOption::VALUE_NONE, 'Run cache:warmup command on destination server')
-            ->addOption('rsync-options', null, InputOption::VALUE_OPTIONAL, 'Options to pass to the rsync executable', '-azC --force --delete --progress -h')
+            ->addOption('rsync-options', null, InputOption::VALUE_OPTIONAL, 'Options to pass to the rsync executable', '')
             ;
     }
 
@@ -40,50 +40,39 @@ class DeployCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $output->getFormatter()->setStyle('notice', new OutputFormatterStyle('red', 'yellow'));
-
-        $env    = $input->getArgument('env');
-
-        if (!$this->getContainer()->getParameter('deploy.'.$env.'.host')) {
-            throw new \InvalidArgumentException('You must provide the host');
-        }
-
-        $host   = $this->getContainer()->getParameter('deploy.'.$env.'.host');
-        $dir    = $this->getContainer()->getParameter('deploy.'.$env.'.dir');
-        $user   = $this->getContainer()->getParameter('deploy.'.$env.'.user');
-        $port   = $this->getContainer()->getParameter('deploy.'.$env.'.port');
-
-        if (substr($dir, -1) != '/') {
-            $dir .= '/';
-        }
-
-        $ssh = 'ssh';
-
-        if ($port) {
-          $ssh = '"ssh -p'.$port.'"';
-        }
-
-    $rsync_options = $input->getOption('rsync-options');
-
-    if ($this->getContainer()->getParameter('deploy.'.$env.'.rsync-options'))
-            $rsync_options = $this->getContainer()->getParameter('deploy.'.$env.'.rsync-options');
-
-    if ($input->getOption('rsync-options') !== '-azC --force --delete --progress -h')
-        $rsync_options = $input->getOption('rsync-options');
-
         $config_root_path = $this->getContainer()->get('kernel')->getRootDir()."/config/";
+        $output->getFormatter()->setStyle('notice', new OutputFormatterStyle('red', 'yellow'));
+        $available_env = $this->getContainer()->getParameter('deploy.config');       
+        
+        $env = $input->getArgument('env');
+        
+        if (!in_array($env, array_keys($available_env))) {
+            $output->writeln('<notice>Env value not valid.</notice>');
+            exit();
+        }
+
+        foreach ($available_env[$env] as $key => $value) {
+            $$key = $value;
+        }
+        
+        $ssh = '"ssh -p'.$port.'"';
+
+        if ($input->getOption('rsync-options'))
+            $rsync_options = $input->getOption('rsync-options');
 
         if (file_exists($config_root_path.'rsync_exclude.txt')) {
             $rsync_options .= sprintf(' --exclude-from=%srsync_exclude.txt', $config_root_path);
+        } else {
+            $output->writeln(sprintf('<notice>File %s not exists. Nothing excluded.</notice>', $config_root_path."rsync_exclude.txt"));
         }
 
         $dryRun = $input->getOption('go') ? '' : '--dry-run';
 
-        $command = "rsync $dryRun $rsync_options -e $ssh ./ $user$host:$dir";
+        $command = "rsync $dryRun $rsync_options -e $ssh ./ ".(($user !='') ? $user."@" : "")."$host:$dir";
 
         $output->writeln(sprintf('%s on <info>%s</info> server with <info>%s</info> command',
             ($dryRun) ? 'Fake deploying' : 'Deploying',
-            $env,
+            $input->getArgument('env'),
             $command));
 
         $process = new Process($command);
