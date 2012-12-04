@@ -1,0 +1,17 @@
+.buildpath
+/.project
+/.settings
+/nbproject
+/vendor
+/app/config/*_dev.yml
+/app/config/*_test.yml
+/app/logs/*
+/app/cache
+/web/uploads
+/web/*_dev.php
+/web/*
+/web/bundles
+/web/config.php
+/app/config/parameters.yml
+.gitignore
+.travis.yml
