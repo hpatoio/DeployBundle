@@ -70,15 +70,15 @@ run
 
 ### Rsync Options | New in version 1.1
 
-If you add the key rsync-options to your environment you will override the default options used for rsync. So the system is using 
+If you add the key rsync-options to your environment you will override the default options used for rsync. So the system is using:
 
-* "-azC --force --delete --progress -h" if nothing is specified
-* the value of rsync-options if specified in the config
+* "-azC --force --delete --progress -h --checksum" if nothing is specified
+* the value for the key rsync-options if specified in config.yml for the target environment
 * the value of the command line option --rsync-options
     
 ### Rsync Exclude
 
-Create a rsync_exclude.txt file under app/config to exclude files in your deployments.
+Create a rsync_exclude.txt file under app/config to exclude files in your deployments. If you need a starting template you can get one in Resources/template_rsync_exclude.txt
 
 ### Use
 
@@ -94,7 +94,7 @@ Cache warmup with --cache-warmup option. With this option once the deploy has fi
 
     php app/console project:deploy --go --cache-warmup prod
     
-Custom parameters for rsync (default -azC --force --delete --progress -h) 
+Custom parameters for rsync
 
     php app/console project:deploy --rsync-options="-azChdl" prod
 
