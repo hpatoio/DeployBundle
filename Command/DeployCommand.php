@@ -30,7 +30,7 @@ class DeployCommand extends ContainerAwareCommand
             ->addArgument('env', InputArgument::REQUIRED, 'The environment where you want to deploy the project')
             ->addOption('go', null, InputOption::VALUE_NONE, 'Do the deployment')
             ->addOption('cache-warmup', null, InputOption::VALUE_NONE, 'Run cache:warmup command on destination server')
-            ->addOption('rsync-options', null, InputOption::VALUE_OPTIONAL, 'Options to pass to the rsync executable', '')
+            ->addOption('rsync-options', null, InputOption::VALUE_NONE, 'Options to pass to the rsync executable')
             ;
     }
 
@@ -55,7 +55,7 @@ class DeployCommand extends ContainerAwareCommand
             $$key = $value;
         }
         
-        $ssh = '"ssh -p'.$port.'"';
+        $ssh = 'ssh -p '.$port.'';
 
         if ($input->getOption('rsync-options'))
             $rsync_options = $input->getOption('rsync-options');
@@ -67,8 +67,10 @@ class DeployCommand extends ContainerAwareCommand
         }
 
         $dryRun = $input->getOption('go') ? '' : '--dry-run';
+        
+        $user = ($user !='') ? $user."@" : "";
 
-        $command = "rsync $dryRun $rsync_options -e $ssh ./ ".(($user !='') ? $user."@" : "")."$host:$dir";
+        $command = "rsync $dryRun $rsync_options -e \"$ssh\" ./ $user$host:$dir";
 
         $output->writeln(sprintf('%s on <info>%s</info> server with <info>%s</info> command',
             ($dryRun) ? 'Fake deploying' : 'Deploying',
@@ -101,7 +103,7 @@ class DeployCommand extends ContainerAwareCommand
 
                 $output->writeln(sprintf("Running cache:warmup on <info>%s</info> server!\n", $env));
 
-                $command = "ssh $user$host 'cd $dir;php app/console cache:warmup -e $env'";
+                $command = "$ssh $user$host 'cd $dir; app/console cache:warmup -env=$env'";
 
                 $process = new Process($command);
                 $process->run(function ($type, $buffer) use ($output) {
