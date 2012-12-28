@@ -72,7 +72,7 @@ run
 
 If you add the key rsync-options to your environment you will override the default options used for rsync. So the system is using:
 
-* "-azC --force --delete --progress -h --checksum" if nothing is specified
+* "-azC --force --delete --progress -h" if nothing is specified
 * the value for the key rsync-options if specified in config.yml for the target environment
 * the value of the command line option --rsync-options
     
