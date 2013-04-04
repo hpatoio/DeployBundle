@@ -29,8 +29,8 @@ class DeployCommand extends ContainerAwareCommand
             ->setDescription('Deploy your project via rsync')
             ->addArgument('env', InputArgument::REQUIRED, 'The environment where you want to deploy the project')
             ->addOption('go', null, InputOption::VALUE_NONE, 'Do the deployment')
-            ->addOption('cache-warmup', null, InputOption::VALUE_NONE, 'Run cache:warmup command on destination server')
             ->addOption('rsync-options', null, InputOption::VALUE_NONE, 'Options to pass to the rsync executable')
+            ->addOption('force-vendor', null, InputOption::VALUE_NONE, 'Force sync of vendor dir.')
             ;
     }
 
@@ -50,20 +50,24 @@ class DeployCommand extends ContainerAwareCommand
             $output->writeln('<notice>Env value not valid.</notice>');
             exit();
         }
-
+        
         foreach ($available_env[$env] as $key => $value) {
             $$key = $value;
         }
         
         $ssh = 'ssh -p '.$port.'';
-
+        
         if ($input->getOption('rsync-options'))
             $rsync_options = $input->getOption('rsync-options');
+
+        if ($input->getOption('force-vendor'))
+            $rsync_options .= " --include 'vendor' ";
 
         if (file_exists($config_root_path.'rsync_exclude.txt')) {
             $rsync_options .= sprintf(' --exclude-from=%srsync_exclude.txt', $config_root_path);
         } else {
-            $output->writeln(sprintf('<notice>File %s not exists. Nothing excluded.</notice>', $config_root_path."rsync_exclude.txt"));
+            $output->writeln(sprintf('<notice>File %s not exists. Nothing excluded.</notice> If you want a rsync_exclude.txt template get it here http://bit.ly/rsehdbsf2', $config_root_path."rsync_exclude.txt"));
+            $output->writeln("");
         }
 
         $dryRun = $input->getOption('go') ? '' : '--dry-run';
@@ -93,17 +97,20 @@ class DeployCommand extends ContainerAwareCommand
 
         if ($dryRun) {
 
-            $output->writeln('<notice>This was a simulation, --go was not specified.</notice>');
+            $output->writeln('<notice>This was a simulation, --go was not specified. Post deploy operation not run.</notice>');
             $output->writeln(sprintf('<info>Run the command with --go for really copy the files to %s server.</info>', $env));
 
         } else {
+            
             $output->writeln(sprintf("Deployed on <info>%s</info> server!\n", $env));
 
-            if ( $input->getOption('cache-warmup') ) {
+            if ( isset($post_deploy_operations) && count($post_deploy_operations) > 0 ) {
+                
+                $post_deploy_commands = implode("; ", $post_deploy_operations);
 
-                $output->writeln(sprintf("Running cache:warmup on <info>%s</info> server!\n", $env));
+                $output->writeln(sprintf("Running post deploy commands on <info>%s</info> server!\n", $env));
 
-                $command = "$ssh $user$host 'cd $dir; app/console cache:warmup -env=$env'";
+                $command = "$ssh $user$host 'cd $dir;".$post_deploy_commands."'";
 
                 $process = new Process($command);
                 $process->run(function ($type, $buffer) use ($output) {
@@ -116,11 +123,7 @@ class DeployCommand extends ContainerAwareCommand
 
                 $output->writeln("\nDone");
 
-            } else {
-
-                $output->writeln(sprintf("<notice>Cache was not regenerated on %s server so you might not see changes.</notice> Login to %s server and run:\n\n<info> app/console cache:warmup</info>", $env, $env));
-
-            }
+            } 
 
         }
 

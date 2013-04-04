@@ -1,17 +1,16 @@
+# IDEs files
 .buildpath
-/.project
-/.settings
-/nbproject
-/vendor
-/app/config/*_dev.yml
-/app/config/*_test.yml
-/app/logs/*
-/app/cache
-/web/uploads
-/web/*_dev.php
-/web/*
-/web/bundles
-/web/config.php
-/app/config/parameters.yml
+.project
+.settings
+nbproject
+
+# VCS files
 .gitignore
 .travis.yml
+
+/app/config/*_dev.yml
+/app/logs
+/app/cache
+web/*
+parameters.yml
+vendor

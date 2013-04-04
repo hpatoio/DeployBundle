@@ -58,6 +58,9 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('port')
                                 ->defaultValue('22')
                                 ->info('TCP port.')
+                                ->end()
+                        ->variableNode('post_deploy_operations')
+                                ->info('Shell commands to run after deploy on the remote machine.')
                                 ->end();
         
         return $treeBuilder;

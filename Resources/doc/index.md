@@ -28,7 +28,7 @@ run
 
     bin/vendors install
     
-## Installation 2.1.*
+## Installation 2.1.* and 2.2.*
 
 ###  Add DeployBundle to your composer.json
 
@@ -62,19 +62,29 @@ run
         user: root
         dir: /path/to/dir
         port: 22
-      stage:
+        post_deploy_operations: 
+            - app/console cache:clear
+            - app/console assets:install
+            - app/console assetic:dump
+      uat:
         host: 127.0.0.1 // or the hostname
         user: root2
         dir: /path/to/dir
         port: 22
 
+### Post deploy operations | New in version 1.3
+
+You can add a list of command you want run on the remote server after the deploy. In the configuration above you can see the common command you run after a deploy (clear the cache, publish assets etc)
+These commands are run as a shell command on the remote server. So you can enter whichever shell command you want (cp, rm etc)
+
 ### Rsync Options | New in version 1.1
 
 If you add the key rsync-options to your environment you will override the default options used for rsync. So the system is using:
 
-* "-azC --force --delete --progress -h" if nothing is specified
+* "-azC --force --delete --progress -h --checksum" if nothing is specified
 * the value for the key rsync-options if specified in config.yml for the target environment
 * the value of the command line option --rsync-options
+
     
 ### Rsync Exclude
 
@@ -86,13 +96,15 @@ Deployment is easy:
 
     php app/console project:deploy --go prod
 
-Simulate deployment
+Feel a bit unsure ? Simulate the deploy
 
     php app/console project:deploy prod
     
-Cache warmup with --cache-warmup option. With this option once the deploy has finished cache:warmup command is run on the destination server.   
+Need to update vendor ? Use the option --force-vendor (Usually vendor is excluded from rsync)
 
-    php app/console project:deploy --go --cache-warmup prod
+    php app/console project:deploy --go --force-vendor prod
+
+
     
 Custom parameters for rsync
 
