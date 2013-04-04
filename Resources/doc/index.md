@@ -77,6 +77,10 @@ run
 You can add a list of command you want run on the remote server after the deploy. In the configuration above you can see the common command you run after a deploy (clear the cache, publish assets etc)
 These commands are run as a shell command on the remote server. So you can enter whichever shell command you want (cp, rm etc)
 
+### Force vendor syncronization | New in version 1.3
+
+Now you can force vendor dir syncronization simply adding --force-vendor when running the command. (see later for an example)
+
 ### Rsync Options | New in version 1.1
 
 If you add the key rsync-options to your environment you will override the default options used for rsync. So the system is using:
