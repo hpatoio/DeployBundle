@@ -3,9 +3,15 @@ DeployBundle
 
 Brings Symfony 1.4 project:deploy command to Symfony2.
 
+[![Total Downloads](https://poser.pugx.org/hpatoio/deploy-bundle/downloads.png)](https://packagist.org/packages/hpatoio/deploy-bundle)
+[![Latest Stable Version](https://poser.pugx.org/hpatoio/deploy-bundle/v/stable.png)](https://packagist.org/packages/hpatoio/deploy-bundle)
+
+--
+
 **License**
 
 DeployBundle is licensed under the CC-BY-SA-3.0 - see [here](http://www.spdx.org/licenses/CC-BY-SA-3.0) for details
+
 
 Documentation
 -------------
