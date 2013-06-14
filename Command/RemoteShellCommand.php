@@ -52,49 +52,17 @@ class RemoteShellCommand extends ContainerAwareCommand
         foreach ($available_env[$env] as $key => $value) {
             $$key = $value;
         }
-        
-       
-        $ssh = "ssh -p".$port." $user@$host";
-        
-       
-                
-       
-
+         
+        $ssh = "ssh -t -t -p".$port." $user@$host \"cd $dir;$cmd;exit;\"";
+  
         $output->writeln(sprintf("Running cmd on remote server in environment\n", $env));
 
         $command = $ssh;
         $output->writeln($command);
         $process = new Process($command);
-        $process->run(function ($type, $buffer) use ($output) {
-                if ('err' === $type) {
-                    $output->write( 'ERR > '.$buffer);
-                } else {
-                    $output->write($buffer);
-                }
-            });
-        
-        $command = "cd $dir\n";
-        $output->writeln($command);
-        $process = new Process($command);
-        $process->run(function ($type, $buffer) use ($output) {
-                if ('err' === $type) {
-                    $output->write( 'ERR > '.$buffer);
-                } else {
-                    $output->write($buffer);
-                }
-            });
-            
-       
-        $output->writeln($cmd);
-        $process = new Process($cmd);
-        $process->run(function ($type, $buffer) use ($output) {
-                if ('err' === $type) {
-                    $output->write( 'ERR > '.$buffer);
-                } else {
-                    $output->write($buffer);
-                }
-            });
-        
+        $process->run(function ($type, $buffer) use ($output) {                
+                $output->write($buffer);
+            });        
         $output->writeln("\nDone");
         
         $output->writeln("");
