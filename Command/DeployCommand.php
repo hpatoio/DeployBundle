@@ -63,10 +63,20 @@ class DeployCommand extends ContainerAwareCommand
         if ($input->getOption('force-vendor'))
             $rsync_options .= " --include 'vendor' ";
 
+        $exclude_file_found = false;
+        
         if (file_exists($config_root_path.'rsync_exclude.txt')) {
             $rsync_options .= sprintf(' --exclude-from=%srsync_exclude.txt', $config_root_path);
-        } else {
-            $output->writeln(sprintf('<notice>File %s not exists. Nothing excluded.</notice> If you want a rsync_exclude.txt template get it here http://bit.ly/rsehdbsf2', $config_root_path."rsync_exclude.txt"));
+            $exclude_file_found = true;
+        }
+        
+        if (file_exists($config_root_path."rsync_exclude_{$env}.txt")) {
+            $rsync_options .= sprintf(" --exclude-from=%srsync_exclude_{$env}.txt", $config_root_path);
+            $exclude_file_found = true;
+        }
+        
+        if (!$exclude_file_found) {
+            $output->writeln(sprintf('<notice>No rsync_exclude file found, nothing excluded.</notice> If you want an rsync_exclude.txt template get it here http://bit.ly/rsehdbsf2', $config_root_path."rsync_exclude.txt"));
             $output->writeln("");
         }
 
