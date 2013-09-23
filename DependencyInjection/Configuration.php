@@ -38,7 +38,7 @@ class Configuration implements ConfigurationInterface
                 ->prototype('array')
                     ->children()
                         ->scalarNode('rsync_options')
-                                ->defaultValue('-azC --force --delete --progress -h')
+                                ->defaultValue('-azC --force --delete --progress -h --checksum')
 //                              ->info('Default options used by the rsync command. You can override this value by passing --rsync-options on the command line.')
 //                              ->example('-azC --force --delete --progress -h --checksum')
                                 ->end()
