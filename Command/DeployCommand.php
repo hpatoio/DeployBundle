@@ -47,8 +47,7 @@ class DeployCommand extends ContainerAwareCommand
         $env = $input->getArgument('env');
         
         if (!in_array($env, array_keys($available_env))) {
-            $output->writeln('<notice>Env value not valid.</notice>');
-            exit();
+            throw new \InvalidArgumentException(sprintf('\'%s\' is no a valid environment. Valid environments: %s', $env, implode(",",array_keys($available_env))));
         }
         
         foreach ($available_env[$env] as $key => $value) {
