@@ -1,6 +1,8 @@
 DeployBundle
 =================
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/b4556cd7-652f-4a58-9126-eb2c1abd6c89/small.png)](https://insight.sensiolabs.com/projects/b4556cd7-652f-4a58-9126-eb2c1abd6c89)
+
 Brings Symfony 1.4 project:deploy command to Symfony2.
 
 [![Total Downloads](https://poser.pugx.org/hpatoio/deploy-bundle/downloads.png)](https://packagist.org/packages/hpatoio/deploy-bundle)
