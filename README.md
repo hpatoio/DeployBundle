@@ -25,3 +25,7 @@ The bulk of the documentation is stored in the `Resources/doc/index.md` file in 
 Feedbacks & Support
 -------------
 If you need help or want a new feature feel free to open an issue here on Github or post a comment [here](http://www.iliveinperego.com/2012/03/symfony2-deploy-like-symfony-1-4/)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/hpatoio/deploybundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
