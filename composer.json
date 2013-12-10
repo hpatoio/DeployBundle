@@ -1,7 +1,7 @@
 {
     "name": "hpatoio/deploy-bundle",
     "type": "symfony-bundle",
-    "description": "Brings Symfony 1.4 project:deploy command to Symfony2.",
+    "description": "Easy deploy via rsync. Porting of Symfony 1 project:deploy command.",
     "keywords": ["deploy","command"],
     "homepage": "http://github.com/hpatoio/DeployBundle",
     "license": "CC-BY-SA-3.0",
@@ -9,7 +9,8 @@
         {
             "name": "Simone Fumagalli",
             "homepage": "http://www.iliveinperego.com/",
-            "role": "Web Artisan"
+            "email": "simone@iliveinperego.com",
+            "role": "Developer"
         }
     ],
     "require": {
