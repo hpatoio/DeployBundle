@@ -81,6 +81,7 @@ class DeployCommand extends ContainerAwareCommand
             $command));
 
         $process = new Process($command);
+        $process->setTimeout(($timeout == 0) ? null : $timeout);
 
         $output->writeln("\nSTART deploy\n--------------------------------------------");
 
@@ -112,6 +113,7 @@ class DeployCommand extends ContainerAwareCommand
                 $command = "$ssh $user$host 'cd $dir;".$post_deploy_commands."'";
 
                 $process = new Process($command);
+                $process->setTimeout(($timeout == 0) ? null : $timeout);
                 $process->run(function ($type, $buffer) use ($output) {
                         if ('err' === $type) {
                             $output->write( 'ERR > '.$buffer);
