@@ -1,13 +1,14 @@
 ## Installation
-
 Add the bundle to your `composer.json`
+
+This project follow [semantic versioning](http://semver.org/). Latest stable version is 1.4.
 
 ```json
 {
     ...
     "require": {
         ...
-        "hpatoio/deploy-bundle": "1.*"
+        "hpatoio/deploy-bundle": "~1.4"
     }
 }
 ```
