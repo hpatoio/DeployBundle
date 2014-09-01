@@ -63,7 +63,7 @@ class DeployCommand extends ContainerAwareCommand
             $rsync_options .= " --include 'vendor' ";
 
         if (file_exists($config_root_path.'rsync_exclude.txt')) {
-            $rsync_options .= sprintf(' --exclude-from=%srsync_exclude.txt', $config_root_path);
+            $rsync_options .= sprintf(' --exclude-from="%srsync_exclude.txt"', $config_root_path);
         } else {
             $output->writeln(sprintf('<notice>File %s not exists. Nothing excluded.</notice> If you want a rsync_exclude.txt template get it here http://bit.ly/rsehdbsf2', $config_root_path."rsync_exclude.txt"));
             $output->writeln("");
@@ -110,7 +110,7 @@ class DeployCommand extends ContainerAwareCommand
 
                 $output->writeln(sprintf("Running post deploy commands on <info>%s</info> server!\n", $env));
 
-                $command = "$ssh $user$host 'cd $dir;".$post_deploy_commands."'";
+                $command = "$ssh $user$host 'cd \"$dir\";".$post_deploy_commands."'";
 
                 $process = new Process($command);
                 $process->setTimeout(($timeout == 0) ? null : $timeout);
