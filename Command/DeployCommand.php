@@ -39,38 +39,48 @@ class DeployCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $config_root_path = $this->getContainer()->get('kernel')->getRootDir()."/config/";
         $output->getFormatter()->setStyle('notice', new OutputFormatterStyle('red', 'yellow'));
-        $available_env = $this->getContainer()->getParameter('deploy.config');       
-        
+        $available_env = $this->getContainer()->getParameter('deploy.config');
+
         $env = $input->getArgument('env');
-        
+
         if (!in_array($env, array_keys($available_env))) {
             throw new \InvalidArgumentException(sprintf('\'%s\' is no a valid environment. Valid environments: %s', $env, implode(",",array_keys($available_env))));
         }
-        
+
         foreach ($available_env[$env] as $key => $value) {
             $$key = $value;
         }
-        
+
         $ssh = 'ssh -p '.$port.'';
-        
+
+        $rsync_options = '';
+
         if ($input->getOption('rsync-options'))
             $rsync_options = $input->getOption('rsync-options');
 
         if ($input->getOption('force-vendor'))
             $rsync_options .= " --include 'vendor' ";
 
-        if (file_exists($config_root_path.'rsync_exclude.txt')) {
-            $rsync_options .= sprintf(' --exclude-from="%srsync_exclude.txt"', $config_root_path);
+        $exclude_file_default = sprintf('%srsync_exclude.txt', $config_root_path);
+        $exclude_file_env = sprintf('%srsync_exclude_%s.txt', $config_root_path, $env);
+
+        if (file_exists($exclude_file_env)) {
+            $exclude_file = $exclude_file_env;
+        } elseif (file_exists($exclude_file_default)) {
+            $exclude_file = $exclude_file_default;
+        }
+
+        if (isset($exclude_file)) {
+            $rsync_options .= sprintf(' --exclude-from=%s', $exclude_file);
         } else {
             $output->writeln(sprintf('<notice>File %s not exists. Nothing excluded.</notice> If you want a rsync_exclude.txt template get it here http://bit.ly/rsehdbsf2', $config_root_path."rsync_exclude.txt"));
             $output->writeln("");
         }
 
         $dryRun = $input->getOption('go') ? '' : '--dry-run';
-        
+
         $user = ($user !='') ? $user."@" : "";
 
         $command = "rsync $dryRun $rsync_options -e \"$ssh\" ./ $user$host:$dir";
@@ -101,11 +111,11 @@ class DeployCommand extends ContainerAwareCommand
             $output->writeln(sprintf('<info>Run the command with --go for really copy the files to %s server.</info>', $env));
 
         } else {
-            
+
             $output->writeln(sprintf("Deployed on <info>%s</info> server!\n", $env));
 
             if ( isset($post_deploy_operations) && count($post_deploy_operations) > 0 ) {
-                
+
                 $post_deploy_commands = implode("; ", $post_deploy_operations);
 
                 $output->writeln(sprintf("Running post deploy commands on <info>%s</info> server!\n", $env));
@@ -124,7 +134,7 @@ class DeployCommand extends ContainerAwareCommand
 
                 $output->writeln("\nDone");
 
-            } 
+            }
 
         }
 
