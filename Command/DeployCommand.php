@@ -47,8 +47,7 @@ class DeployCommand extends ContainerAwareCommand
         $env = $input->getArgument('env');
         
         if (!in_array($env, array_keys($available_env))) {
-            $output->writeln('<notice>Env value not valid.</notice>');
-            exit();
+            throw new \InvalidArgumentException(sprintf('\'%s\' is no a valid environment. Valid environments: %s', $env, implode(",",array_keys($available_env))));
         }
         
         foreach ($available_env[$env] as $key => $value) {
@@ -66,15 +65,15 @@ class DeployCommand extends ContainerAwareCommand
         $exclude_file_found = false;
         
         if (file_exists($config_root_path.'rsync_exclude.txt')) {
-            $rsync_options .= sprintf(' --exclude-from=%srsync_exclude.txt', $config_root_path);
+            $rsync_options .= sprintf(' --exclude-from="%srsync_exclude.txt"', $config_root_path);
             $exclude_file_found = true;
         }
         
         if (file_exists($config_root_path."rsync_exclude_{$env}.txt")) {
-            $rsync_options .= sprintf(" --exclude-from=%srsync_exclude_{$env}.txt", $config_root_path);
+            $rsync_options .= sprintf(' --exclude-from="%srsync_exclude_{$env}.txt"', $config_root_path);
             $exclude_file_found = true;
         }
-        
+
         if (!$exclude_file_found) {
             $output->writeln(sprintf('<notice>No rsync_exclude file found, nothing excluded.</notice> If you want an rsync_exclude.txt template get it here http://bit.ly/rsehdbsf2', $config_root_path."rsync_exclude.txt"));
             $output->writeln("");
@@ -92,6 +91,7 @@ class DeployCommand extends ContainerAwareCommand
             $command));
 
         $process = new Process($command);
+        $process->setTimeout(($timeout == 0) ? null : $timeout);
 
         $output->writeln("\nSTART deploy\n--------------------------------------------");
 
@@ -120,9 +120,10 @@ class DeployCommand extends ContainerAwareCommand
 
                 $output->writeln(sprintf("Running post deploy commands on <info>%s</info> server!\n", $env));
 
-                $command = "$ssh $user$host 'cd $dir;".$post_deploy_commands."'";
+                $command = "$ssh $user$host 'cd \"$dir\";".$post_deploy_commands."'";
 
                 $process = new Process($command);
+                $process->setTimeout(($timeout == 0) ? null : $timeout);
                 $process->run(function ($type, $buffer) use ($output) {
                         if ('err' === $type) {
                             $output->write( 'ERR > '.$buffer);

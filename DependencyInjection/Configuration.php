@@ -59,6 +59,10 @@ class Configuration implements ConfigurationInterface
                                 ->defaultValue('22')
                                 ->info('TCP port.')
                                 ->end()
+                        ->scalarNode('timeout')
+                                ->defaultValue('60')
+                                ->info('Process timeout in seconds. Set it to 0 for no timeout.')
+                                ->end()
                         ->variableNode('post_deploy_operations')
                                 ->info('Shell commands to run after deploy on the remote machine.')
                                 ->end();
