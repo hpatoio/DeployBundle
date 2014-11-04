@@ -9,8 +9,8 @@ nbproject
 .travis.yml
 
 /app/config/*_dev.yml
+/app/config/parameters.yml
 /app/logs
 /app/cache
 web/*
-parameters.yml
 vendor
