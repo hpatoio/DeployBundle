@@ -1,33 +1,26 @@
 DeployBundle
 =================
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/b4556cd7-652f-4a58-9126-eb2c1abd6c89/small.png)](https://insight.sensiolabs.com/projects/b4556cd7-652f-4a58-9126-eb2c1abd6c89)
 [![Total Downloads](https://poser.pugx.org/hpatoio/deploy-bundle/downloads.png)](https://packagist.org/packages/hpatoio/deploy-bundle)
 [![Latest Stable Version](https://poser.pugx.org/hpatoio/deploy-bundle/v/stable.png)](https://packagist.org/packages/hpatoio/deploy-bundle)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/b4556cd7-652f-4a58-9126-eb2c1abd6c89/mini.png)](https://insight.sensiolabs.com/projects/b4556cd7-652f-4a58-9126-eb2c1abd6c89)
 [![Project Status](http://stillmaintained.com/hpatoio/DeployBundle.png)](http://stillmaintained.com/hpatoio/DeployBundle)
 
 --
 
 Easy deploy via rsync. Porting of Symfony 1 project:deploy command.
 
+## Versions
+
+This project follow [semantic versioning](http://semver.org/). Latest stable branch is is `1.5`.
+
 ## Installation
-Add the bundle to your `composer.json`
+Run the command:
 
-This project follow [semantic versioning](http://semver.org/). Latest stable version is 1.4.
-
-```json
-{
-    ...
-    "require": {
-        ...
-        "hpatoio/deploy-bundle": "~1.4"
-    }
-}
-```
-Now tell composer to download the bundle by running the command:
 ```bash
-$ php composer.phar update hpatoio/deploy-bundle
+$ composer update hpatoio/deploy-bundle ~1.5
 ```
+
 ### Enable the bundle in your project
 ```php
 // app/AppKernel.php
@@ -46,6 +39,7 @@ Remember that to get the configuration reference for this bundle you can run:
 ```bash
 app/console config:dump-reference DeployBundle
 ```
+
 Configuration example:
 ```yaml
 # app/config/config.yml
@@ -57,15 +51,15 @@ deploy:
     user: root
     port: 22
     timeout: 120 # Connection timeout in seconds. 0 for no timeout.
-    post_deploy_operations: 
-        - app/console cache:clear
-        - app/console assets:install
-        - app/console assetic:dump
   uat:
     host: 127.0.0.1 // or the hostname
     user: root2
     dir: /path/to/project/root
     port: 22022
+    post_deploy_operations: 
+        - app/console cache:clear --env=prod
+        - app/console assets:install --env=prod
+        - app/console assetic:dump --env=prod    
 ```
 
 Most of the keys don't need explanation except:
@@ -73,6 +67,9 @@ Most of the keys don't need explanation except:
 #### post_deploy_operations | New in version 1.3
 You can add a list of command you want run on the remote server after the deploy. In the configuration above you can see the common command you run after a deploy (clear the cache, publish assets etc)
 These commands are run as a shell command on the remote server. So you can enter whichever shell command you want (cp, rm etc)
+
+Please don't confuse Symfony environment with deploy environment. As you can see in the configuration above we run `post_deploy_operations` for Symfony environment `prod` on deploy environment `uat`
+
 #### rsync-options | New in version 1.1
 If you add the key `rsync-options` to your environment you will override the default options used for rsync. So the system is using:
 
@@ -80,11 +77,14 @@ If you add the key `rsync-options` to your environment you will override the def
 * the value for the key `rsync-options` if specified it in `config.yml` for the target environment
 * the value of the command line option `--rsync-options`
 
-### Force vendor syncronization | New in version 1.3
-Now you can force vendor dir syncronization simply adding `--force-vendor` when running the command. (see later for an example)
-
 ### Rsync Exclude
-Create a `rsync_exclude.txt` file under `app/config` to exclude files from deploy. If you need a starting template you can get one [here](http://bit.ly/rsehdbsf2)
+Create a `rsync_exclude.txt` file under `app/config` to exclude files from deploy. [here](http://bit.ly/rsehdbsf2) a good starting point.
+
+You can also create a per-environment rsync_exclude. Just create a file in `app/config` with name `rsync_exclude_{env}.txt`. For more details you can read here #3 and here #7
+
+## Force vendor syncronization | New in version 1.3
+Usually `vendor` dir is excluded from rsync. If you need tou sync it you can add `--force-vendor`. (see later for an example)
+
 ## Use
 Deployment is easy: 
 ```shell
@@ -102,13 +102,6 @@ Custom parameters for rsync
 ```shell
 php app/console project:deploy --rsync-options="-azChdl" prod
 ```
-## Feedbacks
-For any feedback open an issue here on Github or comment here http://www.iliveinperego.com/2012/03/symfony2-deploy-like-symfony-1-4/    
-
-Feedbacks & Support
--------------
-If you need help or want a new feature feel free to open an issue here on Github or post a comment [here](http://www.iliveinperego.com/2012/03/symfony2-deploy-like-symfony-1-4/)
-
 License
 -------------
 DeployBundle is licensed under the CC-BY-SA-3.0 - see [here](http://www.spdx.org/licenses/CC-BY-SA-3.0) for details
