@@ -6,17 +6,15 @@ DeployBundle
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/b4556cd7-652f-4a58-9126-eb2c1abd6c89/mini.png)](https://insight.sensiolabs.com/projects/b4556cd7-652f-4a58-9126-eb2c1abd6c89)
 [![Project Status](http://stillmaintained.com/hpatoio/DeployBundle.png)](http://stillmaintained.com/hpatoio/DeployBundle)
 
---
-## Versions
-
-This project follow [semantic versioning](http://semver.org/). Latest stable branch is is `1.5`.
-
 ## Installation
 Run the command:
 
 ```bash
 $ composer update hpatoio/deploy-bundle ~1.5
 ```
+
+**N.B.** This project follow [semantic versioning](http://semver.org/). Latest stable branch is is `1.5`.
+
 
 ### Enable the bundle in your project
 ```php
