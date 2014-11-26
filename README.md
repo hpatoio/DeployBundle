@@ -41,13 +41,13 @@ Configuration example:
 deploy:
   prod:
     rsync-options: '-azC --force --delete --progress -h --checksum'
-    host: 123.45.67.89 // or the hostname
+    host: my.destination.env
     dir: /path/to/project/root
     user: root
     port: 22
     timeout: 120 # Connection timeout in seconds. 0 for no timeout.
   uat:
-    host: 127.0.0.1 // or the hostname
+    host: 192.168.1.10
     user: root2
     dir: /path/to/project/root
     port: 22022
@@ -59,13 +59,13 @@ deploy:
 
 Most of the keys don't need explanation except:
 
-#### post_deploy_operations | New in version 1.3
+#### post_deploy_operations
 You can add a list of command you want run on the remote server after the deploy. In the configuration above you can see the common command you run after a deploy (clear the cache, publish assets etc)
 These commands are run as a shell command on the remote server. So you can enter whichever shell command you want (cp, rm etc)
 
 Please don't confuse Symfony environment with deploy environment. As you can see in the configuration above we run `post_deploy_operations` for Symfony environment `prod` on deploy environment `uat`
 
-#### rsync-options | New in version 1.1
+#### rsync-options
 If you add the key `rsync-options` to your environment you will override the default options used for rsync. So the system is using:
 
 * "-azC --force --delete --progress -h --checksum" if nothing is specified
@@ -77,7 +77,7 @@ Create a `rsync_exclude.txt` file under `app/config` to exclude files from deplo
 
 You can also create a per-environment rsync_exclude. Just create a file in `app/config` with name `rsync_exclude_{env}.txt`. For more details you can read here #3 and here #7
 
-## Force vendor syncronization | New in version 1.3
+## Force vendor syncronization
 Usually `vendor` dir is excluded from rsync. If you need tou sync it you can add `--force-vendor`. (see later for an example)
 
 ## Use
