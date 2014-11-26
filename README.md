@@ -7,9 +7,6 @@ DeployBundle
 [![Project Status](http://stillmaintained.com/hpatoio/DeployBundle.png)](http://stillmaintained.com/hpatoio/DeployBundle)
 
 --
-
-Easy deploy via rsync. Porting of Symfony 1 project:deploy command.
-
 ## Versions
 
 This project follow [semantic versioning](http://semver.org/). Latest stable branch is is `1.5`.
