@@ -13,7 +13,7 @@ Run the command:
 $ composer update hpatoio/deploy-bundle ~1.5
 ```
 
-**N.B.** This project follow [semantic versioning](http://semver.org/). Latest stable branch is is `1.5`.
+**N.B.** This project follow [semantic versioning](http://semver.org/). Latest stable branch is `1.5`.
 
 
 ### Enable the bundle in your project
