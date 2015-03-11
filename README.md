@@ -73,7 +73,7 @@ If you add the key `rsync-options` to your environment you will override the def
 * the value of the command line option `--rsync-options`
 
 ### Rsync Exclude
-Create a `rsync_exclude.txt` file under `app/config` to exclude files from deploy. [here](http://bit.ly/rsehdbsf2) a good starting point.
+Create a `rsync_exclude.txt` file under `app/config` to exclude files from deploy. [here](https://github.com/hpatoio/DeployBundle/blob/master/.rsync_exclude.txt.dist) a good starting point.
 
 You can also create a per-environment rsync_exclude. Just create a file in `app/config` with name `rsync_exclude_{env}.txt`. For more details you can read here #3 and here #7
 
