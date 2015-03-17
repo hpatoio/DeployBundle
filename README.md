@@ -10,7 +10,7 @@ DeployBundle
 Run the command:
 
 ```bash
-$ composer update hpatoio/deploy-bundle ~1.5
+$ composer require hpatoio/deploy-bundle ~1.5
 ```
 
 **N.B.** This project follow [semantic versioning](http://semver.org/). Latest stable branch is `1.5`.
