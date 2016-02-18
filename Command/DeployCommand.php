@@ -70,7 +70,7 @@ class DeployCommand extends ContainerAwareCommand
         }
         
         if (file_exists($config_root_path."rsync_exclude_{$env}.txt")) {
-            $rsync_options .= sprintf(' --exclude-from="%srsync_exclude_{$env}.txt"', $config_root_path);
+            $rsync_options .= sprintf(" --exclude-from=\"%srsync_exclude_{$env}.txt\"", $config_root_path);
             $exclude_file_found = true;
         }
 
