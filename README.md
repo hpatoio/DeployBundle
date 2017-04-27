@@ -32,7 +32,7 @@ public function registerBundles()
 Configuration is all about defining environments. You can define as many environments as you want, the only mandatory value is `host`. The deploy is made via rsync so default value are used if none are specified.
 Remember that to get the configuration reference for this bundle you can run:
 ```bash
-app/console config:dump-reference DeployBundle
+bin/console config:dump-reference DeployBundle
 ```
 
 Configuration example:
@@ -52,9 +52,9 @@ deploy:
     dir: /path/to/project/root
     port: 22022
     post_deploy_operations: 
-        - app/console cache:clear --env=prod
-        - app/console assets:install --env=prod
-        - app/console assetic:dump --env=prod    
+        - bin/console cache:clear --env=prod
+        - bin/console assets:install --env=prod
+        - bin/console assetic:dump --env=prod    
 ```
 
 Most of the keys don't need explanation except:
@@ -83,19 +83,19 @@ Usually `vendor` dir is excluded from rsync. If you need tou sync it you can add
 ## Use
 Deployment is easy: 
 ```shell
-php app/console project:deploy --go prod
+php bin/console project:deploy --go prod
 ```
 Feel a bit unsure ? Simulate the deploy
 ```shell
-php app/console project:deploy prod
+php bin/console project:deploy prod
 ```
 Need to update vendor ? Use the option --force-vendor (Usually vendor is excluded from rsync)
 ```shell
-php app/console project:deploy --go --force-vendor prod
+php bin/console project:deploy --go --force-vendor prod
 ```
 Custom parameters for rsync
 ```shell
-php app/console project:deploy --rsync-options="-azChdl" prod
+php bin/console project:deploy --rsync-options="-azChdl" prod
 ```
 License
 -------------
