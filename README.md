@@ -4,7 +4,6 @@ DeployBundle
 [![Total Downloads](https://poser.pugx.org/hpatoio/deploy-bundle/downloads.png)](https://packagist.org/packages/hpatoio/deploy-bundle)
 [![Latest Stable Version](https://poser.pugx.org/hpatoio/deploy-bundle/v/stable.png)](https://packagist.org/packages/hpatoio/deploy-bundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/b4556cd7-652f-4a58-9126-eb2c1abd6c89/mini.png)](https://insight.sensiolabs.com/projects/b4556cd7-652f-4a58-9126-eb2c1abd6c89)
-[![Project Status](http://stillmaintained.com/hpatoio/DeployBundle.png)](http://stillmaintained.com/hpatoio/DeployBundle)
 
 ## Installation
 Run the command:
